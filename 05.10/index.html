@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="estilo.css">
+    <title> Formulário de Vestuário</title>
+</head>
+<body class="fundo">
+    <main>
+        <form onsubmit="event.preventDefault()">
+            <progress id="progresso-formulario" max="100" value="0"></progress>
+
+            <div class="section_form" data-page="1">
+                <header><h1>FORMULARIO DE VESTUARIO </h1></header>
+
+                <!-- <h2> PONTOS:<span id="pontuacao"></span></h2> -->
+                <label for="campo1">Nome: </label> <input type="text" id="input1" placeholder="digite seu nome">
+                <label for="campo2">Sobrenome: </label> <input type="text" id="input2">
+                <label for="campo3">Idade: </label> <input type="number" id="input3">
+                <label for="campo4">Email: </label> <input type="text" id="input4">
+                <label for="campo5">Celular: </label> <input type="number" id="input5">
+            </div>
+
+            <div class="section_form" data-page="2" style="display: none;">
+                <header>
+                    <h1>FORMULARIO DE VESTUARIO - Pagina 2</h1>
+                </header>
+
+                <h1> Informe seu Tamanho e Estilo</h1>
+                <label for="campo6">Altura: </label> <input type="float" id="input6">
+                <label for="campo7">Busto: </label> <input type="number" id="input7">
+                <label for="campo8">Cintura: </label> <input type="number" id="input8">
+                <label for="campo9">Quadril: </label> <input type="number" id="input9">
+                <label for="campo10">Estilo: </label> <input type="text" id="input10">
+
+                <label>Qual é o seu preferido?!</label>
+                <select>
+                    <option>Boho</option>
+                    <option>Old Money</option>
+                    <option>Casual</option>
+                    <option>Elegante</option>
+                    <option>Vintage</option>
+                    <option>Esportivo</option>
+                    <option>Street Style</option>
+                </select>
+            </div>
+
+            <div class="section_form" data-page="3" style="display: none;">
+                <h1> Obrigada</h1>
+                <!-- parte final -->
+            </div>
+
+            <div class="button-container">
+                <button id="btnAnterior">Voltar</button>
+                <button id="btnProximo">Enviar</button>
+            </div>
+        </form>
+    </main>
+    <script>
+        // parte da troca de paginas com o botão btnProximo
+        const btnProximo = document.getElementById("btnProximo");
+        const btnAnterior = document.getElementById("btnAnterior");
+        const secoes = document.querySelectorAll(".section_form");
+        let paginaAtual = 0;
+
+        btnProximo.addEventListener("click", function () {
+            if (paginaAtual < secoes.length - 1) {
+                secoes[paginaAtual].style.display = "none"; // Oculta a seção atual
+                paginaAtual++; // Avança para a próxima página
+                secoes[paginaAtual].style.display = "block"; // Exibe a próxima seção
+            }
+            if(paginaAtual === 2) {
+                btnProximo.style.display = "none";
+                btnAnterior.style.display = "none";
+            }
+
+        });
+
+        btnAnterior.addEventListener("click", function () {
+            if (paginaAtual > 0) {
+                secoes[paginaAtual].style.display = "none"; // Oculta a seção atual
+                paginaAtual--; // Volta para a página anterior
+                secoes[paginaAtual].style.display = "block"; // Exibe a próxima seção   
+            }
+        });
+
+        // função para atualizar a barra de progresso
+        function atualizarProgresso() {
+            const campos = document.querySelectorAll("input[type='text'], input[type='number'], input[type='float'], select");
+            let preenchidos = 0;
+
+            campos.forEach(function (campo) {
+                if (campo.value.trim() !== "") {
+                    preenchidos++;
+                }
+            });
+
+            const pontuacao = (preenchidos / campos.length) * 100;
+            const barraDeProgresso = document.getElementById("progresso-formulario");
+            barraDeProgresso.value = pontuacao;
+        }
+
+        // Adicione um ouvinte de evento "input" a cada campo do formulário
+        const campos = document.querySelectorAll("input[type='text'], input[type='number'], input[type='float'], select");
+        campos.forEach(function (campo) {
+            campo.addEventListener("input", atualizarProgresso);
+        });
+    </script>
+</body>
+</html>
